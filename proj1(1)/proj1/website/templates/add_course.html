@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block title %}Add Recipe{% endblock %} {% block content
+  %}
+  <h1 align="center">Recipes</h1>
+  <ul class="list-group list-group-flush" id="courses">
+    {% for course in user.courses %}
+    <li class="list-group-item">
+      {{ course.recipeName}}
+      <button type="button" class="close" onClick="deleteCourse({{ course.id }})">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </li>
+    {% endfor %}
+  </ul>
+  <form method="POST">
+    <div class="form-group">
+      <label for="recipeName">Recipe Name</label>
+      <input
+        type="recipeName"
+        class="form-control"
+        id="recipeName"
+        name="recipeName"
+        placeholder="Enter recipe's name"
+      />
+    </div>
+
+    <br />
+    <div align="center">
+      <button type="submit" class="btn btn-primary">Add Recipe</button>
+    </div>
+  {% endblock %}

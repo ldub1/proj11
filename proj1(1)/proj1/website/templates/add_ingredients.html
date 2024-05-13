@@ -1,0 +1,83 @@
+{% extends "base.html" %} {% block title %}Add Ingredients{% endblock %} {% block content
+    %}
+    <h1 align="center">Ingredients</h1>
+    <ul class="list-group list-group-flush" id="courses">
+      {% for course in user.courses %}
+      <li class="list-group-item">
+        {{ course.recipeName}}
+        <button type="button" class="close" onClick="deleteCourse({{ course.id }})">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </li>
+      
+      {% for ingredient in course.ingredients %}
+
+      <li class="list-group-item">
+        {{ ingredient.ingredientName, ingredient.unit, ingredient.amount }}
+
+        <button type="button" class="close" onClick="deleteIngredient({{ ingredient.id }})">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        
+      </li>
+      
+      {% endfor %}
+      {% endfor %}
+
+    </ul>
+
+    <form method="POST">
+      <div class="form-group">
+        <label for="recipeName">Recipe Name</label>
+        <input
+          type="recipeName"
+          class="form-control"
+          id="recipeName"
+          name="recipeName"
+          placeholder="Enter recipe's name"
+        />
+      </div>
+
+  
+      <div class="form-group">
+        <label for="unit">Name of Ingredient</label>
+        <input
+          type="ingredientName"
+          class="form-control"
+          id="ingredientName"
+          name="ingredientName"
+          placeholder="Enter the ingredient's name"
+        />
+      </div>
+  
+  
+      <div class="form-group">
+        <label for="unit">Unit of Measurement</label>
+        <input
+          type="unit"
+          class="form-control"
+          id="unit"
+          name="unit"
+          placeholder="Enter the unit of measurement"
+        />
+      </div>
+
+
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input
+          type="amount"
+          class="form-control"
+          id="amount"
+          name="amount"
+          placeholder="Enter the amount your recipe calls for"
+        />
+      </div>
+  
+      
+  
+      <br />
+      <div align="center">
+        <button type="submit" class="btn btn-primary">Add Ingredient</button>
+      </div>
+    {% endblock %}

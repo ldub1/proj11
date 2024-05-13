@@ -1,0 +1,67 @@
+<html>
+<body style="background-color: #738A6D;">
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+  %} 
+{%set temp=["orange","#B08BFF","#F79FF7"]%}
+<div style="background-color: #FFFFFF;margin: auto; height: auto; border-radius: 5px;">
+  <div style="text-align: center; font-weight: bolder; font-size: 26px; padding-right: 15px;">
+      MassFoodies
+  </div>
+<br>
+<table style="width: 100%;">
+  <tr style="width: 100%;">
+    <td style="width: 8%; position: fixed; font-size: 14px; padding-top: 55px; padding-left: 5px; ">
+      <!--tags placeholder-->
+      <form action="search" method="post">
+        
+        <select name="searchWord" id="searchWord">
+          <label>Sort by a Tag</label>
+          <option value="" selected>Sort By</option>
+        {%for i in tagslist%}
+          
+          <option value="{{i}}">{{i}}</option>
+        {%endfor%}
+      </select>
+      
+      <button type="submit" style="border-radius: 10px; border: .5 solid black;">Search</button>
+      </form>
+    </td>
+    <td style="width: 92%; text-align: center; ">
+      <div style="text-align: center; padding-right: 11%;">
+        <h2>Recipes</h2>
+      </div>
+      <table>
+      {%for x in recipeList%}
+        {% if loop.index %2 == 1 %}
+            <tr>
+                <td>
+                    <form action="viewRecipe" >
+                    <input type="image" src="{{url_for('static', filename=x.imgPath)}}" style="width: 400px; height: 175px;" >
+                    <input type="hidden" value="{{x.id}}" id="recipeId" name="recipeId"/>
+                    <input type="submit" value="{{x.recipeTitle}}" style="width: 400px; height: 50px;"/>
+                    </form>
+                    
+                </td>
+        {%else%}
+
+                <td>
+                  
+                  <form action="viewRecipe">
+                  <input type="image" src="{{url_for('static', filename=x.imgPath)}}" style="width: 400px; height: 175px;" >
+                  <input type="hidden" value="{{x.id}}" id="recipeId" name="recipeId"/>
+                  <input type="submit" value="{{x.recipeTitle}}" style="width: 400px; height: 50px"/>
+                  </form>
+                </td>
+              </tr>
+        {%endif%}
+      {%endfor%}
+    </table>
+    </td>
+  
+  </tr>
+</table>
+</div>
+</div>
+{% endblock %}
+</body>
+</html>

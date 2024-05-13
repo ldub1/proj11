@@ -1,0 +1,79 @@
+{% extends "base.html" %}{% block title %}search{% endblock %} {% block content%}
+<body style="background-color: #738A6D; width: 100%;">
+<div style="background-color: #FFFFFF; min-height: 100vh; border-radius: 5px;">
+{%for x in viewrecipe%}
+<div style="display: flex; justify-content: space-between;">
+    <table style="display: inline;">
+        <tr>
+            <td>
+                {{x.recipeTitle}}
+                &emsp;
+            </td>
+            <td>
+                Score: {{((x.Score/x.numOfScore)|string)|truncate(4,true,'')}}
+                &emsp;
+            </td>
+            <td >
+                <form method="post">
+                    <select name="score" id="score">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    </select>
+                    <input type="submit" class="btn " value="score" style="background-color: green;"></button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top; display: flex;">
+                <form action="viewAccount" class="form-inline" > 
+                    Author: &emsp;
+                    <input type="hidden" value="{{x.authorid}}" id="accountId" name="accountId"/>
+                    <button style="background-color: #81D8D0; border: .5px solid black;" class="btn" type="submit" value="{{x.authorid}}">{{x.authorid}}</button>
+                </form>
+                &emsp13;
+                &emsp13;
+                &emsp13;
+                {% if x.authorid == user.name %}
+                <form action="editRecipe" class="form-inline" method="post">
+                    <input type="hidden" id="recipe" name="recipe" value="{{x.id}}"/>
+                    <button value="{{x.id}}" style="height: 100%; width: auto;border-radius: 12px; border: 1.5px solid black; background-color: #FF7F50;">Edit</button>
+                </form> 
+                {%endif%}
+            </td>
+        </tr>
+    </table>
+    {% if x.imgPath!="noImage.jpg" %}
+    <img src="{{url_for('static', filename=x.imgPath)}}" alt="{{x.imgPath}}" style="width: 400px; height: 170px; padding-top: .25%; padding-right: .25%;">
+    {%endif%}
+</div>
+     <table style="width: 100%;">
+        <tr>
+            <td style="width: 20%;">
+                <ul>
+                {%for z in x.ingredient.split("|") %}
+                    {% if z !="" %}
+                        <li>{{z}}</li>
+                    {%endif%}
+                {%endfor%}
+                </ul>
+            </td>
+            <td style="width: 60%; vertical-align:top;">
+                <ol>
+                {%for z in x.instructions.split("|") %}
+                    {% if z !="" %}
+                        <li>{{z}}</li>
+                    {%endif%}
+                {%endfor%}
+                </ol>
+            </td>
+        </tr>
+    </table>
+{%endfor%}
+
+
+{% endblock %}
+</div>
+</body>

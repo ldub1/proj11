@@ -1,0 +1,113 @@
+{% extends "base.html" %}{% block title %}Account Page{% endblock %} {% block content%}
+{%for x in viewaccount%}
+<body style="background-color: #738A6D;">
+{%if listRecipe|length >1 %}
+<div style="background-color: #FFFFFF; height: auto; border-radius: 5px;">
+{%else%}
+<div style="background-color: #FFFFFF; height: 100vh; border-radius: 5px;">
+{%endif%}
+<div style="display: flex; padding-top: .5%;padding-left: .5%;">
+<p style="padding-right: 10px; font-weight: bolder; ">{{x.name}} account </p>
+{% if user and viewaccount[0].id == user.id%}
+<form method="post" action="updateAccount" style="padding-right: 10px;">
+    <input type="hidden" value="{{user.id}}" id="accountId" name="accountId"/>
+    <button type="submit" style="border-radius: 10px; border: 1px solid black;">edit account info</button>
+</form>
+</div>
+<div style="padding-left: .5%;">
+    <label>current account info:</label>
+    <br>
+    <span style="font-weight: bold;">Email: </span> {{user.email}}
+    <br>
+    <span style="font-weight: bold;">Account Name: </span> {{user.name}}
+{%endif%}
+</div>
+{% if listRecipe|length >0 %}
+<br>
+<p style="padding-left: .5%;"> {% if x.name ==user.name %} You {%else%} They {%endif%} have a average recipe score of {{((score/numOfScore)|string)|truncate(4,true,'')}} out of 5.0</p>
+<div style="margin: auto; text-align: center;">
+    <p style="font-weight: bolder;">Recipes</p>
+    <form action="viewAccount" >
+        
+        <input type="hidden" value="{{x.name}}" id="accountId" name="accountId"/>
+        sort by:
+        <select name="searchType" id="searchType">
+            <option value="score">score</option>
+            <option value="tags">tags</option>
+        </select>
+        <input type="hidden" value = {{x.id}} id="accountId" name="accountId"/>
+        <input type="submit" value="Sort"/>
+    </form>
+</div>
+{%else%}
+    {% if user and viewaccount[0].id== user.id %}
+    It seems you have no recipes, how about creating one 
+    <form action="createRecipe">
+        <button style="border-radius: 12px; background-color: orange; border: 1px solid black ;">create Recipe</button>
+    </form>
+    {%else%}
+    They have not uploaded any recipes yet, come back when they do
+    {%endif%}
+{%endif%}
+{%endfor%}
+
+<table style="width: 80%; align-content: center; margin: auto;">
+    <tr>
+        <th style="width: 10%;">
+            <!--Recipe Name-->
+        </th>
+        <th style="width: 20%">
+            <!--Image-->
+        </th>
+        <th style="width: 5%;">
+            <!--Score-->
+            
+        </th>
+        {% if viewaccount and viewaccount[0].id== user.id %}
+        <th style="width: 5%;">
+            <!--edit button-->
+        </th>
+        <th style="width: 5%;">
+            <!--delete button-->
+        </th>
+        {%endif%}
+    </tr>
+    {%for x in listRecipe%}
+    <tr style="display: flexbox; padding-top: 20px; padding-bottom: 1%;" >
+        <td >
+            <form action="viewRecipe">
+                <input type="hidden" value="{{x.id}}" id="recipeId" name="recipeId"/>
+                <button style="width: 95%; border-radius: 10px; border: 1px solid black; background-color: rgb(128, 249, 249);" type="submit" value="{{x.recipeTitle}}">{{x.recipeTitle}}</button>
+                
+            </form>
+        </td>
+        <td>
+            <form action="viewRecipe"> 
+                <input type="hidden" value="{{x.id}}" id="recipeId" name="recipeId"/>
+                <input type="image"  src="{{url_for('static', filename=x.imgPath)}}" style="width: 100%; height: 200px;" >
+            </form>
+        </td>
+        <td>
+            score : {{((x.Score/x.numOfScore)|string)|truncate(4,true,'')}}
+        </td>
+        {% if viewaccount and viewaccount[0].id== user.id %}
+        <td>
+            <form action="editRecipe" method="post">
+                <input type="hidden" value="{{x.id}}" id="recipe" name="recipe"/>
+                <button type="submit" value="editRecipe" style="width: 90%; border: 1px solid black; border-radius: 12px; background-color: orange;">Edit</button>
+            </form>
+        </td>
+        <td>
+            <form action="deleteRecipe">
+                <input type="hidden" value="{{x.id}}" id="recipeId" name="recipeId"/>
+                <input type="hidden" value="{{x.authorid}}" id="accountI" name="accountI"/>
+                <button type="submit" value="delete" style="width: 90%; border: 1px solid black; border-radius: 12px; background-color: red;">Delete</button>
+            </form>
+        </td>
+        {%endif%}
+    </tr>
+    {%endfor%}
+</table>
+</div>
+</body>
+{% endblock %}

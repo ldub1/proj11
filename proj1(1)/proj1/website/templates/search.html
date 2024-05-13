@@ -1,0 +1,97 @@
+{% extends "base.html" %}{% block title %}search{% endblock %} {% block content%}
+<head>
+    <style>
+        button {
+            background-color: #98CCFF;
+        }
+        .buttonAuthor {
+            background-color: orange;
+        }
+    </style>
+</head>
+<body style="background-color: #738A6D;"> 
+{% if recipeList|length >2%}
+<div style="background-color: #FFFFFF; height: auto; border-radius: 5px;">
+{%else%}
+<div style="background-color: #FFFFFF; height: 100vh; border-radius: 5px;">
+{%endif%}
+<div style="width: 100%;">
+<form method = 'POST' class="form-inline" style="text-align: center; margin: auto; display: block; padding-top: 1%;">
+<label for="searchWord"> </label> 
+<input type="searchWord" class="form-control" id="searchWord" name="searchWord" placeholder="Search for a recipe"/>
+<input name="author" value="Search" type="submit" class="btn btn-primary" style="background-color:  #4CAF50; color: white; border-radius: 12px; border: .5px solid black;"/>
+</form>
+</div>
+{%if recipeList%}
+<table style="width: 99%; padding-left: 1%; padding-right: 1%;">
+    <tr style="padding-left: 1%;">
+        <th style="width: 15%;">
+            Recipe Name
+        </th>
+        <th style="width: 15%;">
+            Recipe Author
+        </th>
+        <th style="width: 10%">
+            Image
+        </th>
+        <!--<th style="width: 32.5%;">
+            instructions
+        </th>
+        <th style="width: 32.5%;">
+            ingredients
+        </th>-->
+        <th style="width: 5%;">
+            Score
+        </th>
+    </tr>
+    {%endif%}
+    {% for x in recipeList%}
+    {% if loop.last%}
+        <tr>
+    {%else%}
+        <tr>
+    {%endif%}
+        <td>
+            <!--<form action="viewRecipe({{x.id}})">-->
+                <form action="viewRecipe">
+                <input type="hidden" id="recipeId" name="recipeId" value="{{x.id}}"/>
+                <button type="submit" value="{{x.recipeTitle}}" style="width: 95%; border-radius: 8px;" >{{x.recipeTitle}}</button>
+            </form>
+        </td>
+        <td>
+            <form action="viewAccount">
+                <input type="hidden" id="accountId" name="accountId" value="{{x.authorid}}"/>
+                <button class="buttonAuthor" type="submit" value = "{{x.authorid}}" style="width: 95%; border-radius: 12px;">{{x.authorid}}</button>
+            </form>
+            <!--{{x.authorid}}-->
+        </td>
+        <td>
+            <img src="{{url_for('static', filename=x.imgPath)}}" style="width: 350px; height: 17x0px;" >
+        </td>
+        <!--
+        <td>
+
+          {% set temp=x.instructions.split("|")%}
+          {% set temp=",".join(temp[:temp|length])%}
+            
+            {{temp[:temp|length-1]}}
+
+        </td>
+        <td>
+            {{x.ingredient}}
+        </td>
+        -->
+        <td>
+            {{((x.Score/x.numOfScore)|string)|truncate(4,true,'')}}
+        </td>
+    </tr>
+    <tr style="height: 25px;">
+        <td>
+            
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</div> 
+</body>
+{% endblock %}

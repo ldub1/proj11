@@ -1,0 +1,224 @@
+{% extends "base.html" %}{% block title %}Create Recipe{% endblock %} {% block content
+    %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Recipe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+            form {
+                max-width: 90%;
+                margin: 0 auto;
+            }
+            input[type="text"], textarea, select {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
+                font-size: 16px;
+            }
+            input[type="file"] {
+                margin-bottom: 20px;
+            }
+            input[type="submit"], button {
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+            input[type="submit"]:hover, button:hover {
+                background-color: #45a049;
+            }
+            input[type="file"]::file-selector-button {
+                border-radius: 10px;
+                background-color: #45a049;
+                color: white;
+                border: 0px solid black;
+                height: 50px;
+            }
+            .ingredient-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+            .ingredient-container input[type="text"] {
+                flex: 1;
+                margin-right: 10px;
+            }
+            .ingredient-container select {
+                width: 37%;
+            }
+            #add-ingredient {
+                display: block;
+                margin: 10px auto;
+            }
+        </style>
+</head>
+<body style="background-color: #738A6D;">
+    <div style="background-color: #FFFFFF; border-radius: 5px;">
+    <form method="post" enctype="multipart/form-data" style="padding-top: 10px; padding-bottom: 10px;">
+        <label style="font-weight: bolder;">Recipe Title</label>
+        <input type="hidden" id="currTitle" name="currTitle" value = "{{currTitle}}"/>
+        <input type = "hidden" id="currTags" name = "currTags" value ="{{currTags}}"/>
+        <input type="hidden" id = "existingList" name="existingList" value="{{IngredientList}}"/>
+        <input type="hidden" id = "counter" name="counter" value="{{counter}}"/>
+        <input type="hidden" name="existingInstructions" id ="existingInstructions" value="{{instructionList}}"/>
+        <input type="text" id="recipeTitle" name="recipeTitle" placeholder="Add a recipe title" required>
+        {%if currTitle=="" %}
+        <input type="submit" value="Add Recipe Title"/>
+        {%else%}
+        <input type="submit" value="Update Recipe Title"/>
+        {%endif%}
+    </form>
+    
+    <div id="ingredient-list">
+        
+            <form method="post">
+            <label style="font-weight: bolder;">Ingredients</label>
+            <input type="hidden" id="currTitle" name="currTitle" value = "{{currTitle}}"/>
+            <input type = "hidden" id="currTags" name = "currTags" value ="{{currTags}}"/>
+            <input type="hidden" id = "existingList" name="existingList" value="{{IngredientList}}"/>
+            <input type="hidden" id = "counter" name="counter" value="{{counter}}"/>
+            <input type="hidden" name="existingInstructions" id ="existingInstructions" value="{{instructionList}}"/>
+            <input type="text" name="addINgriendt" id ="addINgriendt" placeholder="Ingredient" required>
+            <input type ="text" name="ingrientQuanity" id=" ingrientQuanity" placeholder="quantity" required/>
+            <select name="size" required>
+                <option value="">-- Select Measurement --</option>
+                    <option value="tsp">tsp</option>
+                    <option value="tbsp">tbsp</option>
+                    <option value="cup">cup</option>
+                    <option value="oz">oz</option>
+                    <option value="g">g</option>
+                    <option value="ml">ml</option>
+                    <option value="none">just the ingredient</option>
+                </select>
+            <input type="submit" value="Add Ingredient"/>
+            </form>
+            
+        </div>
+        <form  method="post" style="padding-bottom: 10px;">
+            <label style="font-weight: bolder;">Instructions</label>
+            <input type="hidden" id="currTitle" name="currTitle" value = "{{currTitle}}"/>
+            <input type = "hidden" id="currTags" name = "currTags" value ="{{currTags}}"/>
+            <input type="hidden" id = "counter" name="counter" value="{{counter}}"/>
+            <input type="hidden" name="existingInstructions" id ="existingInstructions" value="{{instructionList}}"/>
+            <input type="hidden" id = "existingList" name="existingList" value="{{IngredientList}}"/>
+            <textarea id="instructions" name="instructions" rows="6" required placeholder="Add an instruction"></textarea>
+            <input type ="submit" value="Add Instruction"/>
+        </form>
+        
+        <form method="post">
+            <label style="font-weight: bolder;">Tags</label>
+            <br>
+            <input type="hidden" id="currTitle" name="currTitle" value = "{{currTitle}}"/>
+            <input type = "hidden" id="currTags" name = "currTags" value ="{{currTags}}"/>
+            <input type="hidden" id = "counter" name="counter" value="temp.jpg"/>
+            <input type="hidden" name="existingInstructions" id ="existingInstructions" value="{{instructionList}}"/>
+            <input type="hidden" id = "existingList" name="existingList" value="{{IngredientList}}"/>
+            <input type="text" placeholder="add a tag" id="tags" name="tags"/>
+            <input type="submit" value="Add Tag"/>
+        </form>
+
+        <form method="post" enctype=multipart/form-data>
+            <label style="font-weight: bolder;">Image</label>
+            <br>
+            <input type="hidden" name="fileCheck" id="fileCheck" value="fileCheck">
+            <input type="hidden" id="currTitle" name="currTitle" value = "{{currTitle}}"/>
+            <input type = "hidden" id="currTags" name = "currTags" value ="{{currTags}}"/>
+            <input type="hidden" id = "counter" name="counter" value="temp.jpg"/>
+            <input type="hidden" name="existingInstructions" id ="existingInstructions" value="{{instructionList}}"/>
+            <input type="hidden" id = "existingList" name="existingList" value="{{IngredientList}}"/>
+            <input type="file" name="file" accept=".jpg">
+            <input type="submit" value="Upload Image">
+        </form>
+        
+
+    preview (clicking on an item removes it):<br> 
+
+
+<div style="display: flex; justify-content: space-between;">
+    <table style="display: inline;">
+        <tr>
+            <td style="font-weight: bolder;">
+                Title: {{currTitle}}
+                <br>
+                Tags: {{currTags}}
+            </td>
+        </tr>
+    </table>
+        <img src="{{url_for('static', filename=counter)}}" alt="temp" style="width: 360px; height: 150px;">
+</div>
+     <table style="width: 100%;">
+        <tr>
+            <td style="width: 20%;">
+                <h style="font-weight: bold; font-size: 20px;">Instructions</h>
+                <ul>
+                
+                {% if IngredientList %}
+                {%for z in IngredientList.split("|") %}
+                    {% if z !="" %}
+                        <li>
+                            <form method="post" style="padding-top: 5px ; vertical-align: top;">
+                                <input type="hidden" id="currTitle" name="currTitle" value = "{{currTitle}}"/>
+                                <input type = "hidden" id="currTags" name = "currTags" value ="{{currTags}}"/>
+                                <input type="hidden" id = "counter" name="counter" value="{{counter}}"/>
+                                <input type="hidden" name="existingInstructions" id ="existingInstructions" value="{{instructionList}}"/>
+                                <input type="hidden" id = "existingList" name="existingList" value="{{IngredientList}}"/>
+                                <input type="hidden" id="deleteValueIng" name="deleteValueIng" value="{{z}}">
+                                <input type="submit" value="{{z}}"> 
+                            </form>
+                        </li>
+                    {%endif%}
+                {%endfor%}
+                {%endif%}
+                </ul>
+            </td>
+            <td style="width: 60%;">
+                <h style="font-weight: bold; font-size: 20px;">Instructions</h>
+                <ol>
+                {% if instructionList %}
+                {%for z in instructionList.split("|") %}
+                    {% if z !="" %}
+                        <li>
+                            <form method="post" style="padding-top: 5px;">
+                                <input type="hidden" id="currTitle" name="currTitle" value = "{{currTitle}}"/>
+                                <input type = "hidden" id="currTags" name = "currTags" value ="{{currTags}}"/>
+                                <input type="hidden" id = "counter" name="counter" value="{{counter}}"/>
+                                <input type="hidden" name="existingInstructions" id ="existingInstructions" value="{{instructionList}}"/>
+                                <input type="hidden" id = "existingList" name="existingList" value="{{IngredientList}}"/>
+                                <input type="hidden" id="deleteValueIns" name="deleteValueIns" value="{{z}}">
+                                <!--<input type="submit" value="{{z}}" style="font-size: 16px; padding-top: 5px;">-->
+                                <button type="submit">{{z}}</button>
+                            </form>
+
+                        </li>
+                    {%endif%}
+                {%endfor%}
+                {%endif%}
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+<form method="GET" style="text-align: center; margin: auto;">
+    <input type="hidden" id="currTitl" name="currTitl" value = "{{currTitle}}"/>
+    <input type = "hidden" id="currTag" name = "currTag" value ="{{currTags}}"/>
+    <input type="hidden" name="existingInstruction" id ="existingInstruction" value="{{instructionList}}"/>
+    <input type="hidden" id = "existingLis" name="existingLis" value="{{IngredientList}}"/>
+    <input type="hidden" id = "counte" name="counte" value="{{counter}}"/>
+    <input type="submit" value="submit recipe"/>
+</form>
+</div>
+</body>
+</html>
+{% endblock %}
